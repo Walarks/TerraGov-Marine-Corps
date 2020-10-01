@@ -26,6 +26,58 @@
 	desc = "The red shall be ours!"
 	icon_state = "soviet_space_suit"
 	sprite_sheet_id = 1
+	var/obj/item/storage/internal/pockets = /obj/item/storage/internal/suit/coldwar
+
+//Since it isnt' a child of storage we need to define what a pocket is.
+
+/obj/item/storage/internal/suit/coldwar
+	max_storage_space = 16
+	storage_slots = 4
+	draw_mode = TRUE
+	can_hold = list(
+		/obj/item/weapon/combat_knife,
+		/obj/item/ammo_magazine/rifle,
+		/obj/item/ammo_magazine/smg,
+		/obj/item/weapon/throwing_knife
+	)
+
+/obj/item/clothing/suit/space/soviet/Initialize()
+	. = ..()
+	pockets = new pockets(src)
+
+/obj/item/clothing/suit/space/soviet/attack_hand(mob/living/user)
+	if(pockets.handle_attack_hand(user))
+		return ..()
+
+
+/obj/item/clothing/suit/space/soviet/MouseDrop(over_object, src_location, over_location)
+	if(!pockets)
+		return ..()
+	if(pockets.handle_mousedrop(usr, over_object))
+		return ..()
+
+
+/obj/item/clothing/suit/space/soviet/attackby(obj/item/I, mob/user, params)
+	. = ..()
+	if(.)
+		return
+	if(!pockets)
+		return
+
+	return pockets.attackby(I, user, params)
+
+
+/obj/item/clothing/suit/space/soviet/emp_act(severity)
+	pockets?.emp_act(severity)
+	return ..()
+
+/obj/item/clothing/suit/space/soviet/update_icon()
+	if(length(pockets.contents))
+		icon_state = "[initial(icon_state)]-knife"
+	else
+		icon_state = initial(icon_state)
+
+//Limb health component
 
 /obj/item/clothing/suit/space/soviet/Initialize()
 	..()
