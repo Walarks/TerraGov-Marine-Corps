@@ -20,15 +20,16 @@
 
 	id = /obj/item/card/id/silver
 	belt = /obj/item/storage/belt/marine
-	ears = /obj/item/radio/headset/distress/dutch
-	w_uniform = /obj/item/clothing/under/marine/veteran/freelancer
+	ears = /obj/item/radio/headset/kosmnaz
+	w_uniform = /obj/item/clothing/under/kosmnaz
 	shoes = /obj/item/clothing/shoes/marine
 	wear_suit = /obj/item/clothing/suit/space/soviet
-	gloves = /obj/item/clothing/gloves/marine/veteran/PMC
+	gloves = /obj/item/clothing/gloves/marine/veteran/PMC/soviet
 	head = /obj/item/clothing/head/helmet/space/soviet
 	suit_store = /obj/item/weapon/gun/rifle/famas/ak40vm
-	l_store = /obj/item/storage/pouch/firstaid/coldwar
+	l_store = /obj/item/storage/pouch/firstaid/coldwar/full
 	back = /obj/item/tank/jetpack/oxygen/combat
+	mask = /obj/item/clothing/mask/gas/soviet
 
 
 /datum/outfit/job/ussr/soldier/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)

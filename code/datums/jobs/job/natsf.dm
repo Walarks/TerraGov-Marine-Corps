@@ -20,8 +20,8 @@
 
 	id = /obj/item/card/id/silver
 	belt = /obj/item/storage/belt/marine
-	ears = /obj/item/radio/headset/distress/dutch
-	w_uniform = /obj/item/clothing/under/marine/veteran/freelancer
+	ears = /obj/item/radio/headset/natsf
+	w_uniform = /obj/item/clothing/under/natsf
 	shoes = /obj/item/clothing/shoes/marine
 	wear_suit = /obj/item/clothing/suit/space/soviet/natsf
 	gloves = /obj/item/clothing/gloves/marine/veteran/PMC
@@ -29,6 +29,7 @@
 	suit_store = /obj/item/weapon/gun/rifle/famas
 	l_store = /obj/item/storage/pouch/firstaid/coldwar/natsf
 	back = /obj/item/tank/jetpack/oxygen/combat/natsa
+	mask = /obj/item/clothing/mask/rebreather/natsf
 
 
 /datum/outfit/job/natsf/soldier/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
