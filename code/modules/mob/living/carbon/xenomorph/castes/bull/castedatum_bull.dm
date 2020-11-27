@@ -40,9 +40,10 @@
 	actions = list(
 		/datum/action/xeno_action/xeno_resting,
 		/datum/action/xeno_action/regurgitate,
-		/datum/action/xeno_action/activable/headbite,
 		/datum/action/xeno_action/ready_charge/bull_charge,
 		/datum/action/xeno_action/activable/bull_charge,
+		/datum/action/xeno_action/activable/bull_charge/headbutt,
+		/datum/action/xeno_action/activable/bull_charge/gore,
 	)
 
 /datum/xeno_caste/bull/young
@@ -60,11 +61,11 @@
 	tackle_damage = 23
 
 	// *** Speed *** //
-	speed = -0.7
+	speed = -0.8
 
 	// *** Plasma *** //
 	plasma_max = 250
-	plasma_gain = 13
+	plasma_gain = 20
 
 	// *** Health *** //
 	max_health = 275
@@ -74,15 +75,6 @@
 
 	// *** Defense *** //
 	soft_armor = list("melee" = 30, "bullet" = 40, "laser" = 30, "energy" = 30, "bomb" = XENO_BOMB_RESIST_0, "bio" = 28, "rad" = 28, "fire" = 40, "acid" = 28)
-
-	actions = list(
-		/datum/action/xeno_action/xeno_resting,
-		/datum/action/xeno_action/regurgitate,
-		/datum/action/xeno_action/activable/headbite,
-		/datum/action/xeno_action/ready_charge/bull_charge,
-		/datum/action/xeno_action/activable/bull_charge,
-		/datum/action/xeno_action/activable/bull_charge/headbutt,
-	)
 
 /datum/xeno_caste/bull/elder
 	upgrade_name = "Elder"
@@ -97,11 +89,11 @@
 	tackle_damage = 26
 
 	// *** Speed *** //
-	speed = -0.7
+	speed = -0.9
 
 	// *** Plasma *** //
 	plasma_max = 260
-	plasma_gain = 16
+	plasma_gain = 22
 
 	// *** Health *** //
 	max_health = 300
@@ -111,15 +103,6 @@
 
 	// *** Defense *** //
 	soft_armor = list("melee" = 35, "bullet" = 45, "laser" = 35, "energy" = 35, "bomb" = XENO_BOMB_RESIST_0, "bio" = 30, "rad" = 30, "fire" = 45, "acid" = 30)
-
-	actions = list(
-		/datum/action/xeno_action/xeno_resting,
-		/datum/action/xeno_action/regurgitate,
-		/datum/action/xeno_action/activable/headbite,
-		/datum/action/xeno_action/ready_charge/bull_charge,
-		/datum/action/xeno_action/activable/bull_charge,
-		/datum/action/xeno_action/activable/bull_charge/headbutt,
-	)
 
 /datum/xeno_caste/bull/ancient
 	upgrade_name = "Ancient"
@@ -134,11 +117,11 @@
 	tackle_damage = 26
 
 	// *** Speed *** //
-	speed = -0.8
+	speed = -1
 
 	// *** Plasma *** //
 	plasma_max = 270
-	plasma_gain = 18
+	plasma_gain = 24
 
 	// *** Health *** //
 	max_health = 325
@@ -148,13 +131,3 @@
 
 	// *** Defense *** //
 	soft_armor = list("melee" = 40, "bullet" = 50, "laser" = 40, "energy" = 40, "bomb" = XENO_BOMB_RESIST_0, "bio" = 33, "rad" = 33, "fire" = 50, "acid" = 33)
-
-	actions = list(
-		/datum/action/xeno_action/xeno_resting,
-		/datum/action/xeno_action/regurgitate,
-		/datum/action/xeno_action/ready_charge/bull_charge,
-		/datum/action/xeno_action/activable/headbite,
-		/datum/action/xeno_action/activable/bull_charge,
-		/datum/action/xeno_action/activable/bull_charge/headbutt,
-		/datum/action/xeno_action/activable/bull_charge/gore,
-	)

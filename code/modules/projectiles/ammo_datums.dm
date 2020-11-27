@@ -958,9 +958,9 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(/obj/item/clothing/mask/faceh
 	accurate_range = 10
 	accuracy_var_low = 3
 	accuracy_var_high = 3
-	damage = 20
+	damage = 40
 	penetration = 10
-	sundering = 3 //small damage big sunder
+	sundering = 2
 	damage_falloff = 0.5 //forgot to add this
 
 /datum/ammo/bullet/turret/dumb
@@ -969,7 +969,7 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(/obj/item/clothing/mask/faceh
 
 /datum/ammo/bullet/turret/gauss
 	name = "heavy gauss turret slug"
-	damage = 25
+	damage = 30
 	penetration = 30
 	accurate_range = 3
 	sundering = 0
@@ -977,9 +977,9 @@ GLOBAL_LIST_INIT(no_sticky_resin, typecacheof(list(/obj/item/clothing/mask/faceh
 
 /datum/ammo/bullet/turret/mini
 	name = "small caliber autocannon bullet"
-	damage = 15
+	damage = 35
 	penetration = 10
-	sundering = 2
+	sundering = 0
 
 
 /datum/ammo/bullet/machinegun //Adding this for the MG Nests (~Art)

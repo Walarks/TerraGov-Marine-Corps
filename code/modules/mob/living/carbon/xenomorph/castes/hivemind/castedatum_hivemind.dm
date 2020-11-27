@@ -48,7 +48,6 @@
 
 	// *** Abilities *** //
 	actions = list(
-		/datum/action/xeno_action/return_to_core,
 		/datum/action/xeno_action/plant_weeds/slow,
 		/datum/action/xeno_action/psychic_whisper,
 	)
@@ -71,7 +70,6 @@
 
 	// *** Abilities *** //
 	actions = list(
-		/datum/action/xeno_action/return_to_core,
 		/datum/action/xeno_action/plant_weeds/slow,
 		/datum/action/xeno_action/psychic_whisper,
 		/datum/action/xeno_action/activable/psychic_cure,
@@ -94,7 +92,6 @@
 
 	// *** Abilities *** //
 	actions = list(
-		/datum/action/xeno_action/return_to_core,
 		/datum/action/xeno_action/plant_weeds/slow,
 		/datum/action/xeno_action/psychic_whisper,
 		/datum/action/xeno_action/activable/psychic_cure,
@@ -118,7 +115,6 @@
 
 	// *** Abilities *** //
 	actions = list(
-		/datum/action/xeno_action/return_to_core,
 		/datum/action/xeno_action/plant_weeds/slow,
 		/datum/action/xeno_action/psychic_whisper,
 		/datum/action/xeno_action/activable/psychic_cure,

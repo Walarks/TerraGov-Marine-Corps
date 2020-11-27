@@ -28,7 +28,7 @@
 	return
 
 /mob/living/carbon/xenomorph/larva/start_pulling(atom/movable/AM, suppress_message = FALSE)
-	return FALSE
+	return
 
 /mob/living/carbon/xenomorph/larva/pull_response(mob/puller)
 	return TRUE

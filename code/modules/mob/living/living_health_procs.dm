@@ -332,7 +332,6 @@ mob/living/proc/adjustHalLoss(amount) //This only makes sense for carbon.
 	reagents.clear_reagents() //and clear all reagents in them
 	undefibbable = FALSE
 	chestburst = 0
-	headbitten = FALSE
 	update_body()
 	update_hair()
 	return ..()

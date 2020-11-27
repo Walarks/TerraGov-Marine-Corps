@@ -29,7 +29,6 @@
 	var/max_steps_buildup = 14
 	var/crush_living_damage = 20
 	var/next_special_attack = 0 //Little var to keep track on special attack timers.
-	var/plasma_use_multiplier = 1
 
 
 /datum/action/xeno_action/ready_charge/give_action(mob/living/L)
@@ -190,7 +189,7 @@
 		charger.add_movespeed_modifier(MOVESPEED_ID_XENO_CHARGE, TRUE, 100, NONE, TRUE, -CHARGE_SPEED(src))
 
 	if(valid_steps_taken > steps_for_charge)
-		charger.plasma_stored -= round(CHARGE_SPEED(src) * plasma_use_multiplier) //Eats up plasma the faster you go. //now uses a multiplier
+		charger.plasma_stored -= round(CHARGE_SPEED(src)) //Eats up plasma the faster you go.
 
 		switch(charge_type)
 			if(CHARGE_CRUSH) //Xeno Crusher
@@ -319,10 +318,9 @@
 /datum/action/xeno_action/ready_charge/bull_charge
 	charge_type = CHARGE_BULL
 	speed_per_step = 0.1
-	steps_for_charge = 6
+	steps_for_charge = 5
 	max_steps_buildup = 10
-	crush_living_damage = 15
-	plasma_use_multiplier = 1.8
+	crush_living_damage = 30
 
 
 /datum/action/xeno_action/ready_charge/bull_charge/give_action(mob/living/L)
@@ -550,7 +548,7 @@
 		if(CHARGE_BULL_GORE)
 			if(world.time > charge_datum.next_special_attack)
 				charge_datum.next_special_attack = world.time + 2 SECONDS
-				INVOKE_ASYNC(src, /atom/.proc/attack_alien, charger,  0, "chest", FALSE, FALSE, FALSE, INTENT_HARM) //Free gore attack.
+				attack_alien(charger,  0, "chest", FALSE, FALSE, FALSE, INTENT_HARM) //Free gore attack.
 				emote_gored()
 				var/turf/destination = get_step(loc, charger.dir)
 				if(destination)

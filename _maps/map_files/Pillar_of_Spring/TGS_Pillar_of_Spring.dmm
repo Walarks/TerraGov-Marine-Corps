@@ -3728,7 +3728,6 @@
 	pixel_y = 5
 	},
 /obj/item/storage/box/drinkingglasses,
-/obj/item/portable_vendor/corporate,
 /turf/open/floor/wood,
 /area/mainship/command/corporateliaison)
 "mZ" = (
@@ -11555,7 +11554,6 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/machinery/vending/armor_supply,
 /turf/open/floor/mainship,
 /area/mainship/squads/general)
 "LT" = (
@@ -14416,10 +14414,6 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,
 /turf/open/floor/plating/plating_catwalk,
 /area/mainship/hull/lower_hull)
-"YD" = (
-/obj/machinery/vending/armor_supply,
-/turf/open/floor/mainship,
-/area/mainship/living/cafeteria_starboard)
 "YE" = (
 /obj/structure/bed/chair/sofa/corner{
 	dir = 8
@@ -49303,7 +49297,7 @@ LF
 LF
 Bv
 pQ
-YD
+pQ
 Ne
 KU
 sO
