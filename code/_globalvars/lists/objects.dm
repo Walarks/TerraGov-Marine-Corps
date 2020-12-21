@@ -5,6 +5,7 @@ GLOBAL_LIST_EMPTY(cargo_guns_vendors)				//Used by our gamemode code
 GLOBAL_LIST_EMPTY(marine_vendors)					//Used by our gamemode code
 GLOBAL_LIST_EMPTY(attachment_vendors)				//Used by our gamemode code
 GLOBAL_LIST_EMPTY(marine_turrets)
+GLOBAL_LIST_EMPTY(marine_adv_ai)
 
 GLOBAL_LIST_EMPTY(droppod_list)
 GLOBAL_LIST_EMPTY(tank_list)

@@ -1,4 +1,4 @@
-/obj/machinery/ASU
+/obj/machinery/ai_silicon
 	name = "Assault Support Unit"
 	desc = "An AI-controlled machine responsible for maintaining offensive movement."
 	icon = 'icons/Marine/sentry.dmi'
@@ -12,7 +12,8 @@
 	var/on = TRUE
 	var/open = FALSE //Maint panel
 	var/locked = TRUE
-	a_intent = INTENT_HARM
+	var/movement_delay = 4
+	var/robot_action_busy
 
 	var/datum/effect_system/spark_spread/spark_system
 
@@ -25,7 +26,7 @@
 	//behavior parts
 	var/atom/target = null
 
-/obj/machinery/ASU/Initialize()
+/obj/machinery/ai_silicon/Initialize()
 	. = ..()
 	radio = new(src)
 	spark_system = new /datum/effect_system/spark_spread
@@ -38,13 +39,13 @@
 		camera.c_tag = "[name] ([rand(0, 1000)])"
 	machine_stat = NONE
 	update_icon()
-	GLOB.marine_adv_AI += src
+	GLOB.marine_adv_ai += src
 	AddComponent(/datum/component/ai_controller, /datum/ai_behavior/carbon)
 
-/obj/machinery/ASU/Destroy() //Clear these for safety's sake.
+/obj/machinery/ai_silicon/Destroy() //Clear these for safety's sake.
 	QDEL_NULL(radio)
 	QDEL_NULL(camera)
 	QDEL_NULL(cell)
 	target = null
-	GLOB.marine_adv_AI -= src
+	GLOB.marine_adv_ai -= src
 	. = ..()

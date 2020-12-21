@@ -55,7 +55,6 @@ The main purpose of this is to handle cleanup and setting up the initial ai beha
 /datum/component/ai_controller/proc/clean_up()
 	SIGNAL_HANDLER
 	GLOB.ai_instances_active -= src
-	parent.RemoveElement(/datum/element/pathfinder)
 	UnregisterSignal(parent, COMSIG_COMBAT_LOG)
 	if(ai_behavior)
 		STOP_PROCESSING(SSprocessing, ai_behavior)

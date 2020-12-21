@@ -111,7 +111,7 @@
 			cleanup_current_action()
 			atom_to_walk_to = favorable_target
 			cur_action = MOVING_TO_ATOM
-			mob_parent.AddElement(/datum/element/pathfinder, atom_to_walk_to, distance_to_maintain, sidestep_prob)
+			mob_parent.AddElement(/datum/element/pathfinder/mobs, atom_to_walk_to, distance_to_maintain, sidestep_prob)
 			register_action_signals(cur_action)
 
 

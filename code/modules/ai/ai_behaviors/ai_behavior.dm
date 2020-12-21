@@ -12,7 +12,7 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 	var/sidestep_prob = 0 //Prob chance of sidestepping (left or right) when distance maintained with target
 	var/obj/effect/ai_node/current_node //Current node to use for calculating action states: this is the mob's node
 	var/cur_action //Contains a defined term that tells us what we're doing; useful for switch() statements
-	var/mob/mob_parent //Ref to the parent associated with this mind
+	var/mob_parent //Ref to the parent associated with this mind
 
 /datum/ai_behavior/New(loc, parent_to_assign)
 	..()
@@ -23,10 +23,8 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 	mob_parent = parent_to_assign
 	START_PROCESSING(SSprocessing, src)
 
-//Register any signals we want when this is called and setup some starting actions
+//Register any signals we want when this is called
 /datum/ai_behavior/proc/late_initialize()
-	atom_to_walk_to = pick(current_node.adjacent_nodes)
-	mob_parent.AddElement(/datum/element/pathfinder, atom_to_walk_to, distance_to_maintain, sidestep_prob)
 	cur_action = MOVING_TO_NODE
 	register_action_signals(cur_action)
 

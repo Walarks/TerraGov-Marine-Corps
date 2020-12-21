@@ -15,15 +15,9 @@
 	return ..()
 
 /datum/element/pathfinder/process()
-	for(var/mob in distances_to_maintain)
-		var/mob/mob_to_process = mob
-		if(!mob_to_process.canmove || mob_to_process.stat == DEAD)
+	for(var/atom/movable/mob_to_process in distances_to_maintain)
+		if(!thing_can_move(mob_to_process))
 			continue
-
-		//Okay it can actually physically move, but has it moved too recently?
-		if(world.time <= mob_to_process.last_move_time + mob_to_process.cached_multiplicative_slowdown || mob_to_process.action_busy)
-			continue
-
 		if(get_dist(mob_to_process, atoms_to_walk_to[mob_to_process]) == distances_to_maintain[mob_to_process])
 			SEND_SIGNAL(mob_to_process, COMSIG_STATE_MAINTAINED_DISTANCE)
 			if(!(get_dir(mob_to_process, atoms_to_walk_to[mob_to_process]))) //We're right on top, move out of it
@@ -43,18 +37,19 @@
 			SEND_SIGNAL(mob_to_process, COMSIG_OBSTRUCTED_MOVE)
 		mob_to_process.last_move_time = world.time
 
+/datum/element/pathfinder/proc/thing_can_move(var/M)
+	return TRUE
+
 /*
-mob: the mob that's getting the action state
+target: the mob that's getting the action state
 atom_to_walk_to: target to move to
 distance to maintain: mob will try to be at this distance away from the atom to walk to
 stutter_step: a prob() chance to go left or right of the mob's direction towards the target when distance has been maintained
 */
 
-/datum/element/pathfinder/Attach(mob/target, atom/atom_to_walk_to, distance_to_maintain = 0, stutter_step = 0)
+/datum/element/pathfinder/Attach(atom/target, atom/atom_to_walk_to, distance_to_maintain = 0, stutter_step = 0)
 	. = ..()
 	if(QDELETED(target))
-		return ELEMENT_INCOMPATIBLE
-	if(!ismob(target))
 		return ELEMENT_INCOMPATIBLE
 	if(!atom_to_walk_to)
 		return ELEMENT_INCOMPATIBLE
@@ -67,3 +62,38 @@ stutter_step: a prob() chance to go left or right of the mob's direction towards
 	atoms_to_walk_to.Remove(source)
 	stutter_step_prob.Remove(source)
 	return ..()
+
+///Pathfinder mob code, for checks specific to mobs
+/datum/element/pathfinder/mobs
+
+/datum/element/pathfinder/mobs/thing_can_move(var/mob/M)
+	if(!M.canmove || M.stat == DEAD)
+		return FALSE
+	message_admins("[M.cached_multiplicative_slowdown]")
+	//Okay it can actually physically move, but has it moved too recently?
+	if(world.time <= M.last_move_time + M.cached_multiplicative_slowdown || M.action_busy)
+		return FALSE
+	return ..()
+
+/datum/element/pathfinder/Attach(atom/target, atom/atom_to_walk_to, distance_to_maintain = 0, stutter_step = 0)
+	. = ..()
+	if(!ismob(target))
+		return ELEMENT_INCOMPATIBLE
+
+///Pathfinder object code, for checks specific to objs
+/datum/element/pathfinder/objs
+
+/datum/element/pathfinder/objs/thing_can_move(var/smth)
+	var/obj/machinery/ai_silicon/O = smth
+	if(O.anchored || O.robot_action_busy)
+		return FALSE
+
+	//Okay it can actually physically move, but has it moved too recently?
+	if(world.time <= O.last_move_time + O.movement_delay)
+		return FALSE
+	return ..()
+
+/datum/element/pathfinder/objs/Attach(atom/target, atom/atom_to_walk_to, distance_to_maintain = 0, stutter_step = 0)
+	. = ..()
+	if(!isobj(target))
+		return ELEMENT_INCOMPATIBLE
