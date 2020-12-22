@@ -28,22 +28,6 @@
 		if(action.ai_should_start_consider())
 			ability_list += action
 
-//Returns a list of things we preferably want to attack
-/datum/ai_behavior/silicon/proc/get_targets()
-
-//Generic attack proc, unique procs to call for xenos, humans and other species as they all have different ways of executing an attack
-/datum/ai_behavior/silicon/proc/attack_target()
-
-//Attempt to deal with a obstacle
-/datum/ai_behavior/silicon/proc/deal_with_obstacle()
-	SIGNAL_HANDLER_DOES_SLEEP
-
-//Signal wrappers; this can apply to both humans, xenos and other carbons that attack
-
-/datum/ai_behavior/silicon/proc/reason_target_killed(obj/source, gibbing)
-	SIGNAL_HANDLER
-	change_state(REASON_TARGET_KILLED)
-
 /datum/ai_behavior/silicon/change_state(reasoning_for)
 	switch(reasoning_for)
 		if(REASON_FINISHED_NODE_MOVE)
