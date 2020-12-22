@@ -10,9 +10,6 @@
 	var/list/adjacent_nodes = list() // list of adjacent landmark nodes
 	var/list/weights = list(ENEMY_PRESENCE = 0, DANGER_SCALE = 0) //List of weights for the overall things happening at this node
 
-/obj/effect/ai_node/LateInitialize()
-	MakeAdjacents()
-
 /obj/effect/ai_node/proc/increment_weight(name, amount)
 	weights[name] = max(0, weights[name] + amount)
 
@@ -22,6 +19,7 @@
 /obj/effect/ai_node/Initialize() //Add ourselve to the global list of nodes
 	. = ..()
 	GLOB.allnodes += src
+	MakeAdjacents()
 
 /obj/effect/ai_node/Destroy()
 	GLOB.allnodes -= src
@@ -73,7 +71,8 @@ This means that the proc will pick out the *best* node
 
 /obj/effect/ai_node/proc/MakeAdjacents()
 	adjacent_nodes = list()
-	for(var/atom/node in GLOB.allnodes)
+	for(var/N in GLOB.allnodes)
+		var/obj/effect/ai_node/node = N
 		if(node == src)
 			continue
 		if(!(get_dist(src, node) < 16))
@@ -81,6 +80,8 @@ This means that the proc will pick out the *best* node
 		if(ISDIAGONALDIR(get_dir(src, node)))
 			continue
 		adjacent_nodes += node
+		if(length(node.adjacent_nodes) == 0)
+			node.adjacent_nodes += src
 
 	//If there's no adjacent nodes then let's throw a runtime (for mappers) and at admins (if they by any chance were spawning these in)
 	if(!length(adjacent_nodes))
