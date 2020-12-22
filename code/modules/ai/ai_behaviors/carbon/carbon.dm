@@ -28,16 +28,6 @@
 		if(action.ai_should_start_consider())
 			ability_list += action
 
-//Returns a list of things we preferably want to attack
-/datum/ai_behavior/carbon/proc/get_targets()
-
-//Generic attack proc, unique procs to call for xenos, humans and other species as they all have different ways of executing an attack
-/datum/ai_behavior/carbon/proc/attack_target()
-
-//Attempt to deal with a obstacle
-/datum/ai_behavior/carbon/proc/deal_with_obstacle()
-	SIGNAL_HANDLER_DOES_SLEEP
-
 /datum/ai_behavior/carbon/change_state(reasoning_for)
 	switch(reasoning_for)
 		if(REASON_FINISHED_NODE_MOVE)
@@ -46,7 +36,7 @@
 				current_node = atom_to_walk_to
 			atom_to_walk_to = pick(current_node.adjacent_nodes)
 			mob_parent.AddElement(/datum/element/pathfinder/mobs, atom_to_walk_to, distance_to_maintain, sidestep_prob)
-			cur_action = MOVING_TO_NODES
+			cur_action = MOVING_TO_NODE
 			register_action_signals(cur_action)
 
 //Processing; this is for abilities so we don't need to make endless xeno types to code specifically for what abilities they spawn with

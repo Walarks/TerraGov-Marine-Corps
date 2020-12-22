@@ -29,7 +29,22 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 //Cleans up signals related to the action and element(s)
 /datum/ai_behavior/proc/cleanup_current_action()
 	unregister_action_signals(cur_action)
-	RemoveElement(/datum/element/pathfinder)
+
+//Returns a list of things we preferably want to attack
+/datum/ai_behavior/proc/get_targets()
+
+//Generic attack proc, unique procs to call for xenos, humans and other species as they all have different ways of executing an attack
+/datum/ai_behavior/proc/attack_target()
+
+//Attempt to deal with a obstacle
+/datum/ai_behavior/proc/deal_with_obstacle()
+	SIGNAL_HANDLER_DOES_SLEEP
+
+//Signal wrappers
+
+/datum/ai_behavior/proc/reason_target_killed(atom/source, gibbing)
+	SIGNAL_HANDLER
+	change_state(REASON_TARGET_KILLED)
 
 //Cleanups variables related to current state then attempts to transition to a new state based on reasoning for interrupting the current action
 /datum/ai_behavior/proc/change_state(reasoning_for)

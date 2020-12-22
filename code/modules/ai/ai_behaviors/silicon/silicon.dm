@@ -36,7 +36,7 @@
 				current_node = atom_to_walk_to
 			atom_to_walk_to = pick(current_node.adjacent_nodes)
 			obj_parent.AddElement(/datum/element/pathfinder/objs, atom_to_walk_to, distance_to_maintain, sidestep_prob)
-			cur_action = MOVING_TO_NODES
+			cur_action = MOVING_TO_NODE
 			register_action_signals(cur_action)
 
 //Processing; this is for abilities so we don't need to make endless xeno types to code specifically for what abilities they spawn with
