@@ -14,6 +14,7 @@
 	var/locked = TRUE
 	var/movement_delay = 4
 	var/robot_action_busy
+	var/list/robot_actions = list()
 
 	var/datum/effect_system/spark_spread/spark_system
 

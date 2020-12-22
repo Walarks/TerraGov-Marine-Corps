@@ -75,7 +75,7 @@ stutter_step: a prob() chance to go left or right of the mob's direction towards
 		return FALSE
 	return ..()
 
-/datum/element/pathfinder/Attach(atom/target, atom/atom_to_walk_to, distance_to_maintain = 0, stutter_step = 0)
+/datum/element/pathfinder/mobs/Attach(atom/target, atom/atom_to_walk_to, distance_to_maintain = 0, stutter_step = 0)
 	. = ..()
 	if(!ismob(target))
 		return ELEMENT_INCOMPATIBLE
