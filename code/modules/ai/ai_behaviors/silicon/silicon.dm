@@ -11,13 +11,9 @@
 	refresh_abilities()
 	..() //Start random node movement
 
-/datum/ai_behavior/carbon/New(loc, parent_to_assign)
+/datum/ai_behavior/silicon/New(loc, parent_to_assign)
 	..()
-	if(isnull(parent_to_assign))
-		stack_trace("An ai behavior was initialized without a parent to assign it to; destroying mind. Mind type: [type]")
-		qdel(src)
-		return
-	mob_parent = parent_to_assign
+	obj_parent = parent_to_assign
 	START_PROCESSING(SSprocessing, src)
 
 //Refresh abilities-to-consider list

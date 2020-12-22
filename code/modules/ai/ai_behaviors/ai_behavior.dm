@@ -15,6 +15,10 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 
 /datum/ai_behavior/New(loc, parent_to_assign)
 	..()
+	if(isnull(parent_to_assign))
+		stack_trace("An ai behavior was initialized without a parent to assign it to; destroying mind. Mind type: [type]")
+		qdel(src)
+		return
 
 //Register any signals we want when this is called
 /datum/ai_behavior/proc/late_initialize()

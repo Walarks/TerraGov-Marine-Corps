@@ -69,7 +69,6 @@ stutter_step: a prob() chance to go left or right of the mob's direction towards
 /datum/element/pathfinder/mobs/thing_can_move(var/mob/M)
 	if(!M.canmove || M.stat == DEAD)
 		return FALSE
-	message_admins("[M.cached_multiplicative_slowdown]")
 	//Okay it can actually physically move, but has it moved too recently?
 	if(world.time <= M.last_move_time + M.cached_multiplicative_slowdown || M.action_busy)
 		return FALSE

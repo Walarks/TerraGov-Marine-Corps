@@ -1,9 +1,9 @@
 //A generic mind for a carbon; currently has attacking, obstacle dealing and ability activation capabilities
 
 /datum/ai_behavior/carbon
+	var/mob/mob_parent //Ref to the parent associated with this mind
 	var/attack_range = 1 //How far away we gotta be before considering an attack
 	var/list/ability_list = list() //List of abilities to consider doing every Process()
-	var/mob/mob_parent //Ref to the parent associated with this mind
 
 /datum/ai_behavior/carbon/late_initialize()
 	RegisterSignal(mob_parent, COMSIG_OBSTRUCTED_MOVE, .proc/deal_with_obstacle)
@@ -13,10 +13,6 @@
 
 /datum/ai_behavior/carbon/New(loc, parent_to_assign)
 	..()
-	if(isnull(parent_to_assign))
-		stack_trace("An ai behavior was initialized without a parent to assign it to; destroying mind. Mind type: [type]")
-		qdel(src)
-		return
 	mob_parent = parent_to_assign
 	START_PROCESSING(SSprocessing, src)
 
