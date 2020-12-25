@@ -74,22 +74,6 @@
 /mob/living/silicon/contents_explosion(severity)
 	return
 
-
-/mob/living/silicon/emp_act(severity)
-	switch(severity)
-		if(1)
-			Stun(rand(10 SECONDS, 20 SECONDS))
-			take_limb_damage(20)
-		if(2)
-			Stun(rand(2 SECONDS, 10 SECONDS))
-			take_limb_damage(10)
-	flash_act(1, TRUE, type = /obj/screen/fullscreen/flash/noise)
-
-	to_chat(src, "<span class='danger'>*BZZZT*</span>")
-	to_chat(src, "<span class='warning'>Warning: Electromagnetic pulse detected.</span>")
-	return ..()
-
-
 /mob/living/silicon/stun_effect_act(stun_amount, agony_amount, def_zone)
 	return
 
