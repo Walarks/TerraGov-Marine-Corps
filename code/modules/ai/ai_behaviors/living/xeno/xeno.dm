@@ -1,14 +1,14 @@
 //Generic template for application to a xeno/ mob, contains specific obstacle dealing alongside targeting only humans, xenos of a different hive and sentry turrets
 
-/datum/ai_behavior/carbon/xeno
+/datum/ai_behavior/living/xeno
 	sidestep_prob = 25
 
-/datum/ai_behavior/carbon/xeno/New(loc, parent_to_assign)
+/datum/ai_behavior/living/xeno/New(loc, parent_to_assign)
 	..()
 	mob_parent.a_intent = INTENT_HARM //Killing time
 
 //Returns a list of things we can walk to and attack to death
-/datum/ai_behavior/carbon/xeno/get_targets()
+/datum/ai_behavior/living/xeno/get_targets()
 	var/list/return_result = list()
 	for(var/h in cheap_get_humans_near(mob_parent, 8))
 		var/mob/nearby_human = h
@@ -34,16 +34,25 @@
 		return_result += turret
 	return return_result
 
-/datum/ai_behavior/carbon/xeno/process()
+/datum/ai_behavior/living/xeno/process()
 	switch(cur_action)
 		if(MOVING_TO_NODE)
 			if(length(get_targets()))
 				change_state(REASON_TARGET_SPOTTED)
 		if(MOVING_TO_ATOM)
 			change_state(REASON_REFRESH_TARGET) //We'll repick our targets as there could be more better targets to attack
+	for(var/datum/action/action in ability_list)
+		if(!action.ai_should_use(atom_to_walk_to))
+			continue
+		//xeno_action/activable is activated with a different proc for keybinded actions, so we gotta use the correct proc
+		if(istype(action, /datum/action/xeno_action/activable))
+			var/datum/action/xeno_action/activable/xeno_action = action
+			xeno_action.use_ability(atom_to_walk_to)
+		else
+			action.action_activate()
 	return ..()
 
-/datum/ai_behavior/carbon/xeno/deal_with_obstacle()
+/datum/ai_behavior/living/xeno/deal_with_obstacle()
 	if(world.time < mob_parent.next_move)
 		return
 
@@ -72,7 +81,7 @@
 		mob_parent.loc = frame.loc
 		return
 
-/datum/ai_behavior/carbon/xeno/attack_target()
+/datum/ai_behavior/living/xeno/attack_target()
 	if(world.time < mob_parent.next_move)
 		return
 	if(get_dist(atom_to_walk_to, mob_parent) > attack_range)
@@ -88,7 +97,7 @@
 		thing.attack_alien(xeno)
 	xeno.changeNext_move(xeno.xeno_caste.attack_delay)
 
-/datum/ai_behavior/carbon/xeno/change_state(reasoning_for)
+/datum/ai_behavior/living/xeno/change_state(reasoning_for)
 
 	switch(reasoning_for)
 		//At time of writing this, these are all the reasons currently implemented, although that will change once I feature bloat the AI again in the future
@@ -117,7 +126,7 @@
 
 	return ..() //Random node moving
 
-/datum/ai_behavior/carbon/xeno/register_action_signals(action_type)
+/datum/ai_behavior/living/xeno/register_action_signals(action_type)
 	switch(action_type)
 		if(MOVING_TO_ATOM)
 			RegisterSignal(mob_parent, COMSIG_STATE_MAINTAINED_DISTANCE, .proc/attack_target)
@@ -130,7 +139,7 @@
 
 	return ..()
 
-/datum/ai_behavior/carbon/xeno/unregister_action_signals(action_type)
+/datum/ai_behavior/living/xeno/unregister_action_signals(action_type)
 	switch(action_type)
 		if(MOVING_TO_ATOM)
 			UnregisterSignal(mob_parent, COMSIG_STATE_MAINTAINED_DISTANCE)

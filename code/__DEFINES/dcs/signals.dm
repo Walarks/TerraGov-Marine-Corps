@@ -546,9 +546,14 @@
 #define ACTION_GIVEN "gave_an_action"		//from base of /datum/action/proc/give_action(): (datum/action)
 #define ACTION_REMOVED "removed_an_action"	//from base of /datum/action/proc/remove_action(): (datum/action)
 
+///AI-related signals
+
 // Action state signal that's sent whenever the action state has a distance maintained with the target being walked to
 #define COMSIG_STATE_MAINTAINED_DISTANCE "action_state_maintained_dist_with_target"
 #define COMSIG_OBSTRUCTED_MOVE "unable_to_step_towards_thing" //Tried to step in a direction and there was a obstruction
+
+///Sent when a mob's owner mob changes/gets removed
+#define COMSIG_MASTER_MOB_CHANGED "master_mob_changed"
 
 /*******Non-Signal Component Related Defines*******/
 

@@ -7,3 +7,8 @@
 //DEFINES for AI behavior to utilize to show off what it's currently doing
 #define MOVING_TO_NODE "moving_to_a_node" //Move to a node
 #define MOVING_TO_ATOM "moving_to_an_atom" //We want to move to this thing and probably hit it; can be just about anything like a mob or machinery
+
+#define STANDBY "standby" //when the AI is required to wait for something to happen
+
+/// AI-related signals
+#define COMSIG_

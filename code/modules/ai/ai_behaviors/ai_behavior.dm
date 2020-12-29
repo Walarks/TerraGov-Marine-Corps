@@ -29,6 +29,7 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 	mob_parent.AddElement(/datum/element/pathfinder, atom_to_walk_to, distance_to_maintain, sidestep_prob)
 	cur_action = MOVING_TO_NODE
 	register_action_signals(cur_action)
+	RegisterSignal(mob_parent, COMSIG_OBSTRUCTED_MOVE, .proc/deal_with_obstacle)
 
 //We finished moving to a node, let's pick a random nearby one to travel to
 /datum/ai_behavior/proc/finished_node_move()
@@ -39,6 +40,7 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 /datum/ai_behavior/proc/cleanup_current_action()
 	unregister_action_signals(cur_action)
 	RemoveElement(/datum/element/pathfinder)
+	distance_to_maintain = initial(distance_to_maintain)
 
 //Cleanups variables related to current state then attempts to transition to a new state based on reasoning for interrupting the current action
 /datum/ai_behavior/proc/change_state(reasoning_for)
@@ -48,9 +50,18 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 			if(isainode(atom_to_walk_to)) //Cases where the atom we're walking to can be a mob to kill or turfs
 				current_node = atom_to_walk_to
 			atom_to_walk_to = pick(current_node.adjacent_nodes)
+			distance_to_maintain = 0
 			mob_parent.AddElement(/datum/element/pathfinder, atom_to_walk_to, distance_to_maintain, sidestep_prob)
 			cur_action = MOVING_TO_NODE
 			register_action_signals(cur_action)
+
+//Attempt to deal with a obstacle
+/datum/ai_behavior/proc/deal_with_obstacle()
+	SIGNAL_HANDLER_DOES_SLEEP
+	if(get_dist(mob_parent, atom_to_walk_to) == 1 && distance_to_maintain == 0) //if mob needs to be on top of the target, but target is obstructed
+		distance_to_maintain = 1
+		RemoveElement(/datum/element/pathfinder)
+		mob_parent.AddElement(/datum/element/pathfinder, atom_to_walk_to, distance_to_maintain, sidestep_prob)
 
 //Generic process(), this is used for mainly looking at the world around the AI and determining if a new action must be considered and executed
 /datum/ai_behavior/process()
