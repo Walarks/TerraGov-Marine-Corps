@@ -604,6 +604,7 @@
 	if(!use_ripples)
 		return FALSE
 	var/list/turfs = ripple_area(S1)
+	message_admins("create ripples mode [mode]")
 	for(var/t in turfs)
 		ripples += new /obj/effect/abstract/ripple(t, animate_time)
 	return TRUE

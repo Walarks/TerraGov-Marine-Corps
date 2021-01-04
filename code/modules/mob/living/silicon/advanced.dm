@@ -28,7 +28,7 @@
 /mob/living/silicon/ai_advanced/Initialize()
 	. = ..()
 	builtInCamera = new(src)
-	AddComponent(/datum/component/ai_controller, /datum/ai_behavior/living)
+	AddComponent(/datum/component/ai_controller, /datum/ai_behavior/living/silicon)
 
 /mob/living/silicon/ai_advanced/Destroy()
 	QDEL_NULL(builtInCamera)
@@ -39,13 +39,13 @@
 	if(isidcard(I))
 		var/obj/item/card/id/card = I
 		if(!(unique_access in card.access))
-			say("<span class='warning'>Access denied.</span>")
+			say(src, "<span class='warning'>Access denied.</span>")
 			return
 
 		if(master_mob)
 			switch(alert(user,"Do you want to reset [src]'s owner?",,"Yes","No"))
 				if("Yes")
-					say("<span class='avoidharm'>[master_mob.name] has been unassigned. Standby function will commense shortly if no escort target has been assigned.</span>")
+					say(src, "<span class='avoidharm'>[master_mob.name] has been unassigned. Standby function will commense shortly if no escort target has been assigned.</span>")
 					master_mob = null
 				if("No")
 					return
@@ -55,7 +55,8 @@
 			master_mob = input(user, "Target", "Select an escort target.") as null|anything in possible_masters
 			if(!master_mob)
 				return
-			say("<span class='avoidharm'>[master_mob.name] has been assigned as owner.</span>")
+			say(src, "<span class='avoidharm'>[master_mob.name] has been assigned as owner.</span>")
 
+		message_admins("[master_mob]")
 		SEND_SIGNAL(src, COMSIG_MASTER_MOB_CHANGED, master_mob)
 		return

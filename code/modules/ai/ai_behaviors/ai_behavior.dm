@@ -25,11 +25,14 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 
 //Register any signals we want when this is called and setup some starting actions
 /datum/ai_behavior/proc/late_initialize()
+<<<<<<< Updated upstream
 	atom_to_walk_to = pick(current_node.adjacent_nodes)
 	mob_parent.AddElement(/datum/element/pathfinder, atom_to_walk_to, distance_to_maintain, sidestep_prob)
 	cur_action = MOVING_TO_NODE
 	register_action_signals(cur_action)
-	RegisterSignal(mob_parent, COMSIG_OBSTRUCTED_MOVE, .proc/deal_with_obstacle)
+=======
+	return
+>>>>>>> Stashed changes
 
 //We finished moving to a node, let's pick a random nearby one to travel to
 /datum/ai_behavior/proc/finished_node_move()

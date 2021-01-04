@@ -12,3 +12,20 @@
 
 /// AI-related signals
 #define COMSIG_
+
+<<<<<<< Updated upstream
+/**
+ * Identifier tags
+ * Ultilized for having AI look at weights based on if they're a "marine human" or a "xenomorph" or something else
+ * This is mainly used for deciding what weights are to be looked at when determing a node waypoint of going towards
+ */
+#define IDENTIFIER_XENO "identifies_xeno"
+=======
+#define FOLLOWING "following"
+#define RETURNING "returning"
+#define REPOSITIONING "repositioning"
+#define REASON_FOLLOWER_MODE "follower_mode"
+#define REASON_STANDBY "standby"
+#define REASON_BASE_RETURN "base_return"
+#define REASON_REPOSITIONING "repositioninng"
+>>>>>>> Stashed changes
