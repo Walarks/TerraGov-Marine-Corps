@@ -426,6 +426,11 @@ GLOBAL_LIST_INIT(xenoupgradetiers, list(XENO_UPGRADE_BASETYPE, XENO_UPGRADE_INVA
 #define XENO_NEURO_AMOUNT_RECURRING			10
 #define XENO_NEURO_CHANNEL_TIME				1.5 SECONDS
 
+#define XENO_HEALTH_ALERT_TRIGGER_PERCENT	0.33 //If a xeno is damaged while its current hit points are less than this percent of its maximum, we send out an alert to the hive
+#define XENO_HEALTH_ALERT_TRIGGER_THRESHOLD	100 //If a xeno is damaged while its current hit points are less than this amount, we send out an alert to the hive
+#define XENO_HEALTH_ALERT_COOLDOWN			30 SECONDS //The cooldown on these xeno damage alerts
+#define XENO_HEALTH_ALERT_POINTER_DURATION	6 SECONDS //How long the alert directional pointer lasts.
+
 #define CANNOT_HOLD_EGGS 0
 #define CAN_HOLD_TWO_HANDS 1
 #define CAN_HOLD_ONE_HAND 2
@@ -599,6 +604,14 @@ GLOBAL_LIST_INIT(human_body_parts, list(BODY_ZONE_HEAD,
 #define AI_IDLE		2
 #define AI_OFF		3
 #define AI_Z_OFF	4
+
+//ASU AI modes
+#define ASU_STANDBY		1
+#define ASU_FOLLOWER	2
+#define ASU_BASE_RETURN 3
+
+//ASU behaviour flags
+#define ASU_SHUTTLE_TRANSPORT (1<<0)
 
 //Stamina
 #define STAMINA_STATE_IDLE 0

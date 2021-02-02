@@ -12,6 +12,8 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 	var/sidestep_prob = 0 //Prob chance of sidestepping (left or right) when distance maintained with target
 	var/obj/effect/ai_node/current_node //Current node to use for calculating action states: this is the mob's node
 	var/cur_action //Contains a defined term that tells us what we're doing; useful for switch() statements
+	var/mob/mob_parent //Ref to the parent associated with this mind
+	var/identifier //An identifier associated with this behavior, used for accessing specific values of a node's weights
 
 /datum/ai_behavior/New(loc, parent_to_assign)
 	..()
@@ -52,7 +54,15 @@ Registers signals, handles the pathfinding element addition/removal alongside ma
 
 //Cleanups variables related to current state then attempts to transition to a new state based on reasoning for interrupting the current action
 /datum/ai_behavior/proc/change_state(reasoning_for)
-	return
+	switch(reasoning_for)
+		if(REASON_FINISHED_NODE_MOVE)
+			cleanup_current_action()
+			if(isainode(atom_to_walk_to)) //Cases where the atom we're walking to can be a mob to kill or turfs
+				current_node = atom_to_walk_to
+			atom_to_walk_to = pick(current_node.adjacent_nodes)
+			mob_parent.AddElement(/datum/element/pathfinder, atom_to_walk_to, distance_to_maintain, sidestep_prob)
+			cur_action = MOVING_TO_NODE
+			register_action_signals(cur_action)
 
 //Generic process(), this is used for mainly looking at the world around the AI and determining if a new action must be considered and executed
 /datum/ai_behavior/process()

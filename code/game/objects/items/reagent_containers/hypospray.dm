@@ -10,7 +10,7 @@
 	icon_state = "hypo_base"
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = null
-	volume = 60
+	volume = 120
 	init_reagent_flags = OPENCONTAINER
 	flags_equip_slot = ITEM_SLOT_BELT
 	flags_item = NOBLUDGEON
@@ -262,12 +262,59 @@
 
 
 /obj/item/reagent_containers/hypospray/advanced/tricordrazine
-	list_reagents = list(/datum/reagent/medicine/tricordrazine = 60)
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 120)
 
 
 /obj/item/reagent_containers/hypospray/advanced/oxycodone
-	list_reagents = list(/datum/reagent/medicine/oxycodone = 60)
+	list_reagents = list(/datum/reagent/medicine/oxycodone = 120)
+	
+/obj/item/reagent_containers/hypospray/advanced/combat
+	name = "Combat hypospray"
+	desc = "An hypospray loaded with several doses of advanced healing and painkilling chemicals. Intended for use in active combat."
+	list_reagents = list(
+		/datum/reagent/medicine/bicaridine = 40,
+		/datum/reagent/medicine/kelotane = 40,
+		/datum/reagent/medicine/tramadol = 40,
+	)	
+	
+/obj/item/reagent_containers/hypospray/advanced/combat_advanced
+	name = "Advanced combat hypospray"
+	desc = "An hypospray loaded with several doses of advanced healing and painkilling chemicals. Intended for use in active combat."
+	list_reagents = list(
+		/datum/reagent/medicine/meralyne = 40,
+		/datum/reagent/medicine/dermaline = 40,
+		/datum/reagent/medicine/oxycodone = 40,
+	)
 
+/obj/item/reagent_containers/hypospray/advanced/meraderm
+	name = "A meraderm hypospray"
+	desc = "An hypospray loaded with meralyne and dermaline."
+	list_reagents = list(
+		/datum/reagent/medicine/meralyne = 60,
+		/datum/reagent/medicine/dermaline = 60,
+	)
+
+/obj/item/reagent_containers/hypospray/advanced/meralyne
+	name = "A meralyne hypospray"
+	desc = "An hypospray loaded with meralyne."
+	list_reagents = list(
+		/datum/reagent/medicine/meralyne = 120,
+	)
+
+/obj/item/reagent_containers/hypospray/advanced/dermaline
+	name = "A dermaline hypospray"
+	desc = "An hypospray loaded with dermaline."
+	list_reagents = list(
+		/datum/reagent/medicine/dermaline = 120,
+	)
+	
+/obj/item/reagent_containers/hypospray/advanced/ironsugar
+	name = "A ironsugar hypospray"
+	desc = "An hypospray loaded with ironsugar."
+	list_reagents = list(
+		/datum/reagent/iron = 60, 
+		/datum/reagent/consumable/sugar = 60,
+	)
 
 /obj/item/reagent_containers/hypospray/advanced/update_icon()
 	. = ..()

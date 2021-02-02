@@ -217,6 +217,8 @@
 /mob/living/carbon/xenomorph/start_pulling(atom/movable/AM, suppress_message = TRUE)
 	if(!isliving(AM))
 		return FALSE
+	if(!Adjacent(AM)) //Logic!
+		return FALSE
 	var/mob/living/L = AM
 	if(L.buckled)
 		return FALSE //to stop xeno from pulling marines on roller beds.
@@ -270,7 +272,7 @@
 
 	hud_to_add = GLOB.huds[DATA_HUD_XENO_REAGENTS]
 	hud_to_add.add_hud_to(src)
-	hud_to_add = GLOB.huds[DATA_HUD_XENO_TUNNELS] //Allows us to see tunnels clearly via HUD elements
+	hud_to_add = GLOB.huds[DATA_HUD_XENO_TACTICAL] //Allows us to see xeno tactical elements clearly via HUD elements
 	hud_to_add.add_hud_to(src)
 
 
