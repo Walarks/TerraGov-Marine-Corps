@@ -605,6 +605,14 @@ GLOBAL_LIST_INIT(human_body_parts, list(BODY_ZONE_HEAD,
 #define AI_OFF		3
 #define AI_Z_OFF	4
 
+//ASU AI modes
+#define ASU_STANDBY		1
+#define ASU_FOLLOWER	2
+#define ASU_BASE_RETURN 3
+
+//ASU behaviour flags
+#define ASU_SHUTTLE_TRANSPORT (1<<0)
+
 //Stamina
 #define STAMINA_STATE_IDLE 0
 #define STAMINA_STATE_ACTIVE 1

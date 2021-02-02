@@ -559,6 +559,9 @@
 ///sent to the instrument when a song stops playing
 #define COMSIG_SONG_END		"song_end"
 
+// AI Signals
+#define COMSIG_ASU_MASTER_CHANGED "asu_master_changed"
+
 /*******Non-Signal Component Related Defines*******/
 
 
