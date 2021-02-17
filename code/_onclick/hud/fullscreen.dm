@@ -139,6 +139,11 @@
 	icon_state = "painoverlay"
 	layer = FULLSCREEN_PAIN_LAYER
 
+/obj/screen/fullscreen/thermals
+	icon_state = "thermals"
+	layer = FULLSCREEN_THERMALS_LAYER
+	alpha = 200
+	
 
 /obj/screen/fullscreen/lighting_backdrop
 	icon = 'icons/mob/screen/generic.dmi'

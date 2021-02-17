@@ -306,10 +306,42 @@
 	..()
 
 
-/obj/item/clothing/glasses/sunglasses/sechud/tactical
+/obj/item/clothing/glasses/thermals
 	name = "tactical HUD"
 	desc = "Flash-resistant goggles with inbuilt combat and security information."
 	icon_state = "swatgoggles"
+	actions_types = list(/datum/action/item_action/toggle)
+	var/hud_type
+
+/obj/item/clothing/glasses/thermals/equipped(mob/living/carbon/human/user, slot)
+	if(slot != SLOT_GLASSES || !active)
+		user.clear_fullscreen("thermals_overlay")
+		animate(user.client, color = list(), time = 10)
+		return ..()
+
+//	var/datum/atom_hud/H = GLOB.huds[hud_type]
+//	H.add_hud_to(user)
+	user.overlay_fullscreen("thermals_overlay", /obj/screen/fullscreen/thermals)	
+	if(user.client && !user.client.color)
+		animate(user.client, color = user.client.color.matrix(color_matrix_contrast(4)), time = 10)
+
+	..()
+
+/obj/item/clothing/glasses/thermals/dropped(mob/living/carbon/human/user)
+	if(istype(user))
+		if(src == user.glasses) //dropped is called before the inventory reference is updated.
+			var/datum/atom_hud/H = GLOB.huds[hud_type]
+			H.remove_hud_from(user)
+			user.clear_fullscreen("thermals_overlay")
+			animate(user.client, color = list(), time = 10)
+	..() 
+
+/obj/item/clothing/glasses/thermals/attack_self(mob/user)
+	toggle_item_state(user)
+
+/obj/item/clothing/glasses/thermals/toggle_item_state(mob/user)
+	. = ..()
+	active = !active
 
 /obj/item/clothing/glasses/sunglasses/aviator
 	name = "aviator sunglasses"
