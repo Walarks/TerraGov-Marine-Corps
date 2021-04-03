@@ -305,6 +305,22 @@
 			H.remove_hud_from(user)
 	..()
 
+/obj/item/clothing/glasses/sunglasses/sechud/tactical
+	name = "tactical HUD"
+	desc = "Flash-resistant goggles with inbuilt combat and security information."
+	icon_state = "swatgoggles"
+
+/obj/item/clothing/glasses/sunglasses/aviator
+	name = "aviator sunglasses"
+	desc = "A pair of aviator sunglasses."
+	icon_state = "aviator"
+	item_state = "aviator"
+
+/obj/item/clothing/glasses/sunglasses/aviator/yellow
+	name = "aviator sunglasses"
+	desc = "A pair of aviator sunglasses. Comes with yellow lens."
+	icon_state = "aviator_yellow"
+	item_state = "aviator_yellow"
 
 /obj/item/clothing/glasses/thermals
 	name = "tactical HUD"
@@ -354,7 +370,7 @@
 	. = ..()
 	if(!istype(user))
 		return
-		
+
 	var/hud_type = DATA_HUD_USSR_TEAM
 	if(istype(user.job, /datum/job/natsf))
 		hud_type = DATA_HUD_NATSF_TEAM
@@ -372,15 +388,3 @@
 	if(user.client && !user.client.color)
 		animate(user.client, color = color_mod, time = 10)
 	active = TRUE
-
-/obj/item/clothing/glasses/sunglasses/aviator
-	name = "aviator sunglasses"
-	desc = "A pair of aviator sunglasses."
-	icon_state = "aviator"
-	item_state = "aviator"
-
-/obj/item/clothing/glasses/sunglasses/aviator/yellow
-	name = "aviator sunglasses"
-	desc = "A pair of aviator sunglasses. Comes with yellow lens."
-	icon_state = "aviator_yellow"
-	item_state = "aviator_yellow"

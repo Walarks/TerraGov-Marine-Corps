@@ -119,9 +119,6 @@
 /mob/proc/med_hud_set_health()
 	return
 
-///datum/atom_hud/thermals
-//	hud_icons = list(THERMALS_HUD)
-
 /mob/living/carbon/xenomorph/med_hud_set_health()
 	var/image/holder = hud_list[HEALTH_HUD_XENO]
 	if(!holder)
