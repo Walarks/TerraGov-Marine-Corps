@@ -311,25 +311,36 @@
 	desc = "Flash-resistant goggles with inbuilt combat and security information."
 	icon_state = "swatgoggles"
 	actions_types = list(/datum/action/item_action/toggle)
-	var/hud_type
+	var/list/color_mod = list(0.3,0.3,0.3,0, 0.59,0.59,0.59,0, 0.11,0.11,0.11,0, 0,0,0,3, -0.1,-0.1,-0.1,0)
+
+/obj/item/clothing/glasses/thermals/Initialize()
+	. = ..()
 
 /obj/item/clothing/glasses/thermals/equipped(mob/living/carbon/human/user, slot)
+	var/hud_type = DATA_HUD_USSR_TEAM
+	if(istype(user.job, /datum/job/natsf))
+		hud_type = DATA_HUD_NATSF_TEAM
+	var/datum/atom_hud/H = GLOB.huds[hud_type]
+
 	if(slot != SLOT_GLASSES || !active)
+		H.remove_hud_from(user)
 		user.clear_fullscreen("thermals_overlay")
 		animate(user.client, color = list(), time = 10)
 		return ..()
 
-//	var/datum/atom_hud/H = GLOB.huds[hud_type]
-//	H.add_hud_to(user)
+	H.add_hud_to(user)
 	user.overlay_fullscreen("thermals_overlay", /obj/screen/fullscreen/thermals)	
 	if(user.client && !user.client.color)
-		animate(user.client, color = user.client.color.matrix(color_matrix_contrast(4)), time = 10)
+		animate(user.client, color = color_mod, time = 10)
 
 	..()
 
 /obj/item/clothing/glasses/thermals/dropped(mob/living/carbon/human/user)
 	if(istype(user))
 		if(src == user.glasses) //dropped is called before the inventory reference is updated.
+			var/hud_type = DATA_HUD_USSR_TEAM
+			if(istype(user.job, /datum/job/natsf))
+				hud_type = DATA_HUD_NATSF_TEAM
 			var/datum/atom_hud/H = GLOB.huds[hud_type]
 			H.remove_hud_from(user)
 			user.clear_fullscreen("thermals_overlay")
@@ -339,9 +350,28 @@
 /obj/item/clothing/glasses/thermals/attack_self(mob/user)
 	toggle_item_state(user)
 
-/obj/item/clothing/glasses/thermals/toggle_item_state(mob/user)
+/obj/item/clothing/glasses/thermals/toggle_item_state(mob/living/carbon/human/user)
 	. = ..()
-	active = !active
+	if(!istype(user))
+		return
+		
+	var/hud_type = DATA_HUD_USSR_TEAM
+	if(istype(user.job, /datum/job/natsf))
+		hud_type = DATA_HUD_NATSF_TEAM
+	var/datum/atom_hud/H = GLOB.huds[hud_type]
+
+	if(active)
+		H.remove_hud_from(user)
+		user.clear_fullscreen("thermals_overlay")
+		animate(user.client, color = list(), time = 10)
+		active = FALSE
+		return
+
+	H.add_hud_to(user)
+	user.overlay_fullscreen("thermals_overlay", /obj/screen/fullscreen/thermals)	
+	if(user.client && !user.client.color)
+		animate(user.client, color = color_mod, time = 10)
+	active = TRUE
 
 /obj/item/clothing/glasses/sunglasses/aviator
 	name = "aviator sunglasses"

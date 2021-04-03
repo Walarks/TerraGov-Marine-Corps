@@ -142,8 +142,7 @@
 /obj/screen/fullscreen/thermals
 	icon_state = "thermals"
 	layer = FULLSCREEN_THERMALS_LAYER
-	alpha = 200
-	
+	alpha = 100	
 
 /obj/screen/fullscreen/lighting_backdrop
 	icon = 'icons/mob/screen/generic.dmi'
