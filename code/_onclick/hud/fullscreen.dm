@@ -144,6 +144,11 @@
 	layer = FULLSCREEN_THERMALS_LAYER
 	alpha = 100	
 
+/obj/screen/fullscreen/night_vision
+	icon_state = "night_vision"
+	layer = FULLSCREEN_NIGHT_VISION_LAYER
+	alpha = 100	
+
 /obj/screen/fullscreen/lighting_backdrop
 	icon = 'icons/mob/screen/generic.dmi'
 	icon_state = "flash"
