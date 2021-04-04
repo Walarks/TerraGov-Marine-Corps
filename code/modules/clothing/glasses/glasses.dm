@@ -356,11 +356,12 @@
 	name = "thermal goggles"
 	desc = "Specialized goggles able to see heat signatures. Has a built-in function to distinguish allies."
 	icon_state = "swatgoggles"
+	toggleable = TRUE
 	actions_types = list(/datum/action/item_action/toggle)
 	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
 	darkness_view = 28
 	///Affects how floor is colored
-	var/list/floor_color_mod = list(0.1,0.1,0.1,0, 0.3,0.3,0.3,0, 0.4,0.4,0.4,0, 0,0,0,3, -0.3,-0.3,-0.3,0)
+	var/list/floor_color_mod = list(0.1,0.1,0.1,0, 0.3,0.3,0.3,0, 0.4,0.4,0.4,0, 0,0,0,1, -0.3,-0.3,-0.3,0)
 	///Affects how any other things are colored
 	var/list/game_color_mod = list(0.3,0.3,0.3,0, 0.59,0.59,0.59,0, 0.11,0.11,0.11,0, 0,0,0,3, -0.1,-0.1,-0.1,0)
 
@@ -408,9 +409,10 @@
 	name = "night vision goggles"
 	desc = "Specialized goggles able to see in the dark. Has a built-in function to distinguish allies."
 	icon_state = "swatgoggles"
+	toggleable = TRUE
 	actions_types = list(/datum/action/item_action/toggle)
 	///Affects how floor is colored
-	var/list/floor_color_mod = list(0,0.2,0,0, 0.2,0.2,0.2,0, 0,0.11,0,0, 0,0,0,3, -0.15,-0.15,-0.15,0)
+	var/list/floor_color_mod = list(0,0.2,0,0, 0.2,0.2,0.2,0, 0,0.11,0,0, 0,0,0,3, -0.3,-0.3,-0.3,0)
 	///Affects how any other things are colored
 	var/list/game_color_mod = list(0.1,0.3,0.1,0, 0.4,0.2,0.4,0, 0.05,0.11,0.05,0, 0,0,0,6, -0.1,-0.1,-0.1,0)
 	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
