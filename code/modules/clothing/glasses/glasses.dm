@@ -17,23 +17,6 @@
 	var/invis_override = 0 //Override to allow glasses to set higher than normal see_invis
 	var/lighting_alpha
 
-
-/obj/item/clothing/glasses/equipped(mob/user, slot)
-	. = ..()
-
-	if(slot != SLOT_GLASSES || !active)
-		disable_vis_overlay(user)
-		return ..()
-
-	enable_vis_overlay(user)
-	..()
-
-/obj/item/clothing/glasses/dropped(mob/living/carbon/human/user)
-	if(istype(user))
-		if(src == user.glasses) //dropped is called before the inventory reference is updated.
-			disable_vis_overlay(user)
-	..() 
-
 /obj/item/clothing/glasses/update_clothing_icon()
 	if (ismob(src.loc))
 		var/mob/M = src.loc
@@ -61,7 +44,6 @@
 	active = TRUE
 	icon_state = initial(icon_state)
 	user.update_inv_glasses()
-	enable_vis_overlay(user)
 	if(!silent)
 		to_chat(user, "You activate the optical matrix on [src].")
 		playsound(user, 'sound/items/googles_on.ogg', 15)
@@ -71,19 +53,9 @@
 	active = FALSE
 	icon_state = deactive_state
 	user.update_inv_glasses()
-	disable_vis_overlay(user)
 	if(!silent)
 		to_chat(user, "You deactivate the optical matrix on [src].")
 		playsound(user, 'sound/items/googles_off.ogg', 15)
-
-
-///Enables any additional visual elements that might be shown on the player's screen
-/obj/item/clothing/glasses/proc/enable_vis_overlay(mob/user)
-	return
-
-///Disables any additional visual elements that might be shown on the player's screen
-/obj/item/clothing/glasses/proc/disable_vis_overlay(mob/user)
-	return
 
 /obj/item/clothing/glasses/science
 	name = "science goggles"
@@ -351,109 +323,3 @@
 	desc = "A pair of aviator sunglasses. Comes with yellow lens."
 	icon_state = "aviator_yellow"
 	item_state = "aviator_yellow"
-
-/obj/item/clothing/glasses/thermals
-	name = "thermal goggles"
-	desc = "Specialized goggles able to see heat signatures. Has a built-in function to distinguish allies."
-	icon_state = "swatgoggles"
-	toggleable = TRUE
-	actions_types = list(/datum/action/item_action/toggle)
-	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
-	darkness_view = 28
-	///Affects how floor is colored
-	var/list/floor_color_mod = list(0.1,0.1,0.1,0, 0.3,0.3,0.3,0, 0.4,0.4,0.4,0, 0,0,0,1, -0.3,-0.3,-0.3,0)
-	///Affects how any other things are colored
-	var/list/game_color_mod = list(0.3,0.3,0.3,0, 0.59,0.59,0.59,0, 0.11,0.11,0.11,0, 0,0,0,3, -0.1,-0.1,-0.1,0)
-
-/obj/item/clothing/glasses/thermals/enable_vis_overlay(mob/living/carbon/human/user)
-	if(!istype(user))
-		return
-
-	var/hud_type = DATA_HUD_USSR_TEAM
-	if(istype(user.job, /datum/job/natsf))
-		hud_type = DATA_HUD_NATSF_TEAM
-	var/datum/atom_hud/H = GLOB.huds[hud_type]
-
-	var/obj/screen/plane_master/game_world/game_master = locate(/obj/screen/plane_master/game_world) in user.client?.screen
-	var/obj/screen/plane_master/floor/floor_master = locate(/obj/screen/plane_master/floor) in user.client?.screen
-
-	H.add_hud_to(user)
-	user.overlay_fullscreen("thermals_overlay", /obj/screen/fullscreen/thermals)	
-	if(user.client)
-		animate(game_master, color = game_color_mod, time = 10)
-		animate(floor_master, color = floor_color_mod, time = 10)
-
-	..()
-
-/obj/item/clothing/glasses/thermals/disable_vis_overlay(mob/living/carbon/human/user)
-	if(!istype(user))
-		return
-
-	var/hud_type = DATA_HUD_USSR_TEAM
-	if(istype(user.job, /datum/job/natsf))
-		hud_type = DATA_HUD_NATSF_TEAM
-	var/datum/atom_hud/H = GLOB.huds[hud_type]
-
-	var/obj/screen/plane_master/game_world/game_master = locate(/obj/screen/plane_master/game_world) in user.client?.screen
-	var/obj/screen/plane_master/floor/floor_master = locate(/obj/screen/plane_master/floor) in user.client?.screen
-
-	H.remove_hud_from(user)
-	user.clear_fullscreen("thermals_overlay")
-	if(user.client)
-		animate(game_master, color = list(), time = 10)
-		animate(floor_master, color = list(), time = 10)
-
-	..()
-
-/obj/item/clothing/glasses/nv_goggles
-	name = "night vision goggles"
-	desc = "Specialized goggles able to see in the dark. Has a built-in function to distinguish allies."
-	icon_state = "swatgoggles"
-	toggleable = TRUE
-	actions_types = list(/datum/action/item_action/toggle)
-	///Affects how floor is colored
-	var/list/floor_color_mod = list(0,0.2,0,0, 0.2,0.2,0.2,0, 0,0.11,0,0, 0,0,0,3, -0.3,-0.3,-0.3,0)
-	///Affects how any other things are colored
-	var/list/game_color_mod = list(0.1,0.3,0.1,0, 0.4,0.2,0.4,0, 0.05,0.11,0.05,0, 0,0,0,6, -0.1,-0.1,-0.1,0)
-	lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
-	darkness_view = 28
-
-/obj/item/clothing/glasses/nv_goggles/enable_vis_overlay(mob/living/carbon/human/user)
-	if(!istype(user))
-		return
-
-	var/hud_type = DATA_HUD_USSR_TEAM
-	if(istype(user.job, /datum/job/natsf))
-		hud_type = DATA_HUD_NATSF_TEAM
-	var/datum/atom_hud/H = GLOB.huds[hud_type]
-
-	var/obj/screen/plane_master/game_world/game_master = locate(/obj/screen/plane_master/game_world) in user.client?.screen
-	var/obj/screen/plane_master/floor/floor_master = locate(/obj/screen/plane_master/floor) in user.client?.screen
-
-	H.add_hud_to(user)
-	user.overlay_fullscreen("night_vision_overlay", /obj/screen/fullscreen/night_vision)	
-	if(user.client)
-		animate(game_master, color = game_color_mod, time = 10)
-		animate(floor_master, color = floor_color_mod, time = 10)
-
-	..()
-
-/obj/item/clothing/glasses/nv_goggles/disable_vis_overlay(mob/living/carbon/human/user)
-	if(!istype(user))
-		return
-
-	var/hud_type = DATA_HUD_USSR_TEAM
-	if(istype(user.job, /datum/job/natsf))
-		hud_type = DATA_HUD_NATSF_TEAM
-	var/datum/atom_hud/H = GLOB.huds[hud_type]
-
-	var/obj/screen/plane_master/game_world/game_master = locate(/obj/screen/plane_master/game_world) in user.client?.screen
-	var/obj/screen/plane_master/floor/floor_master = locate(/obj/screen/plane_master/floor) in user.client?.screen
-
-	H.remove_hud_from(user)
-	user.clear_fullscreen("night_vision_overlay")
-	if(user.client)
-		animate(game_master, color = list(), time = 10)
-		animate(floor_master, color = list(), time = 10)
-
-	..()
