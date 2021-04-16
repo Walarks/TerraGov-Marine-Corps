@@ -79,12 +79,12 @@
 	"<span class='xenodanger'>We suddenly bite into the \the [victim]'s head with our second jaw!</span>")
 
 	if(ishuman(victim))
-		var/mob/living/carbon/human/H = victim
+		var/mob/living/carbon/human/patient = victim
 		victim.emote_burstscream()
 		var/datum/internal_organ/O
-		O = H.internal_organs_by_name["brain"] //This removes (and later garbage collects) the organ. No brain means instant death.
-		H.internal_organs_by_name -= "brain"
-		H.internal_organs -= O
+		O = patient.internal_organs_by_name["brain"] //This removes (and later garbage collects) the organ. No brain means instant death.
+		patient.internal_organs_by_name -= "brain"
+		patient.internal_organs -= O
 
 	X.do_attack_animation(victim, ATTACK_EFFECT_BITE)
 	playsound(victim, pick( 'sound/weapons/alien_tail_attack.ogg', 'sound/weapons/alien_bite1.ogg'), 50)
@@ -1338,3 +1338,153 @@
 	victim.dead_ticks = 0
 	ADD_TRAIT(victim, TRAIT_STASIS, TRAIT_STASIS)
 	X.eject_victim(TRUE, starting_turf)
+
+// ***************************************
+// *********** Xeno defibrillator
+// ***************************************
+
+#define TIER1_COST "one"
+#define TIER2_COST "two"
+#define TIER3_COST "three"
+#define TIER4_COST "four"
+
+/datum/action/xeno_action/activable/xeno_defibrillator
+	name = "Psychic Revival"
+	action_icon_state = "regurgitate"
+	mechanics_text = "Devour your victim to cocoon it in your belly. This cocoon will automatically be ejected later, and while the marine inside it still has life force it will give psychic points."
+	use_state_flags = XACT_USE_STAGGERED|XACT_USE_LYING
+	plasma_cost = 100
+	target_flags = XABB_MOB_TARGET
+	///How much psychic points it costs per tier
+	var/list/psychic_costs = list(
+		TIER1_COST = 100,
+		TIER2_COST = 150,
+		TIER3_COST = 250,
+		TIER4_COST = 400,
+	)
+	var/attempt_cooldown = 0
+
+/datum/action/xeno_action/activable/xeno_defibrillator/can_use_ability(atom/A, silent, override_flags)
+	. = ..()
+	if(!.)
+		return
+	if(!isxeno(A))
+		to_chat(owner, "<span class='xenowarning'>We can only revitalize fellow sisters.</span>")
+		return FALSE
+
+	var/mob/living/carbon/xenomorph/patient = A
+
+	if(owner.do_actions) //can't use if busy
+		return FALSE
+	if(!owner.Adjacent(patient)) //checks if owner next to target
+		return FALSE
+	if(patient.stat != DEAD)
+		if(!silent)
+			to_chat(owner, "<span class='xenowarning'>This sister is already alive. Try nibbing it.</span>")
+		return FALSE
+	if(HAS_TRAIT(A, TRAIT_UNDEFIBBABLE))
+		if(!silent)
+			to_chat(owner, "<span class='xenowarning'>This sister doesn't seem wanting to wake up...</span>")
+		return FALSE
+
+	//var/mob/dead/observer/G = patient.get_ghost()
+	var/mob/living/carbon/xenomorph/X = owner
+
+	// if(istype(G))
+	// 	notify_ghost(G, "<font size=3>Someone is trying to revive your body. Return to it if you want to be resurrected!</font>", ghost_sound = 'sound/effects/adminhelp.ogg', enter_text = "Enter", enter_link = "reentercorpse=1", source = patient, action = NOTIFY_JUMP)
+	// else if(!patient.client)
+	// 	//We couldn't find a suitable ghost, this means the person is not returning
+	// 	if(!silent)
+	// 		to_chat(owner, "<span class='xenowarning'>This sister appears to be DNR.</span>")
+	// 	return FALSE
+
+	if(!LAZYACCESS(psychic_costs, patient.tier))
+		if(!silent)
+			to_chat(owner, "<span class='xenowarning'>This sister appears to be abnormal and we don't know how to revitalize it!</span>")
+		return FALSE
+	// if(SSpoints.xeno_points_by_hive[X.hivenumber] < psychic_costs[patient.tier])
+	// 	to_chat(owner, "<span class='xenowarning'>The hive doesn't have the necessary psychic points for you to do that!</span>")
+	// 	return FALSE
+	message_admins("points cost > [psychic_costs[patient.tier]]")
+	if(patient.on_fire)
+		if(!silent)
+			to_chat(X, "<span class='xenowarning'>The sister needs to be in a stable condition for the operation.</span>")
+		return FALSE
+
+	X.face_atom(patient)
+	X.visible_message("<span class='xenodanger'>[X] channels its psychic energy to revitalize [patient]!</span>", \
+	"<span class='xenodanger'>We attempt to bring [patient] to life!</span>", null, 5)
+
+/datum/action/xeno_action/activable/xeno_defibrillator/use_ability(atom/A)
+	var/mob/living/carbon/xenomorph/X = owner
+	var/mob/living/carbon/xenomorph/patient = A
+
+	playsound(get_turf(X),'sound/items/defib_charge.ogg', 25, 0)
+	if(!do_mob(X, patient, 7 SECONDS, BUSY_ICON_FRIENDLY, BUSY_ICON_MEDICAL))
+		X.visible_message("<span class='xenowarning'>[X] stops channeling psychic energy into [patient].</span>",
+		"<span class='xenowarning'>we stop waking up [patient].</span>")
+		return fail_activate()
+	playsound(get_turf(X), 'sound/items/defib_release.ogg', 25, 1)
+
+
+	// if(SSpoints.xeno_points_by_hive[X.hivenumber] < psychic_costs[patient.tier])
+	// 	to_chat(X, "<span class='xenowarning'>The hive's psychic energy appears to have been spent before we could finish!</span>")
+	// 	return FALSE
+
+	X.visible_message("<span class='notice'>[X] shocks [patient]!</span>",
+	"<span class='notice'>We shock [patient] to wake up!</span>")
+	patient.visible_message("<span class='xenodanger'>[patient]'s body convulses a bit.</span>")
+
+	// if(!patient.client) //Freak case, no client at all. This is a braindead mob (like a colonist)
+	// 	to_chat(X, "<span class='xenowarning'>[patient] appears to be in a deep sleep. Attempting to wake them up again.</span>")
+
+	// if(patient.mind && !patient.client) //Let's call up the correct ghost! Also, bodies with clients only, thank you.
+	// 	var/mob/dead/observer/G = patient.get_ghost()
+	// 	if(istype(G))
+	// 		to_chat(X, "<span class='xenowarning'>[patient] appears to be waking up, but is still asleep. Please try again.</span>")
+	// 		return fail_activate()
+	// 	//We couldn't find a suitable ghost, this means the person is not returning
+	// 	to_chat(X, "<span class='xenowarning'>This sister appears to be DNR.</span>")
+	// 	return fail_activate()
+
+	// if(!patient.client) //Freak case, no client at all. This is a braindead mob (like a colonist)
+	// 	to_chat(X, "<span class='xenowarning'>This sister appears to be DNR.</span>")
+	// 	return fail_activate()
+
+	X.visible_message("<span class='xenodanger'>[patient] seems to be awake!</span>")
+	patient.heal_overall_damage(patient.getBruteLoss(), patient.getFireLoss())
+	patient.stagger = 20
+	patient.sunder = 40
+	patient.set_slowdown(10)
+	if(patient.stat == DEAD)
+		patient.hive?.on_xeno_revive(patient)
+	patient.set_stat(CONSCIOUS)
+	patient.emote("gasp")
+	patient.regenerate_icons()
+	patient.reload_fullscreens()
+	patient.flash_act()
+	patient.apply_effect(10, EYE_BLUR)
+	patient.handle_regular_hud_updates()
+	patient.updatehealth() //One more time, so it doesn't show the target as dead on HUDs
+
+	to_chat(patient, "<span class='notice'>You suddenly feel a spark and your consciousness returns, dragging you back to the mortal plane.</span>")
+
+	notify_ghosts("<b>[X]</b> has brought <b>[patient.name]</b> back to life!", source = patient, action = NOTIFY_ORBIT)
+	succeed_activate()
+
+/datum/action/xeno_action/activable/xeno_defibrillator/ai_should_start_consider()
+	return TRUE
+
+/datum/action/xeno_action/activable/xeno_defibrillator/ai_should_use(target)
+	if(!iscarbon(target))
+		return ..()
+	if(get_dist(target, owner) > 1)
+		return ..()
+	if(!can_use_ability(target, override_flags = XACT_IGNORE_SELECTED_ABILITY))
+		return ..()
+	return TRUE
+
+#undef TIER1_COST
+#undef TIER2_COST
+#undef TIER3_COST
+#undef TIER4_COST
