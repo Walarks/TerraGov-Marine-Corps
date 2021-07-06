@@ -299,9 +299,9 @@
 	A.add_hud(user)
 	A.update_hud(user)
 	do_wield(user, wdelay)
-	if(CHECK_BITFIELD(flags_gun_features, AUTO_AIM_MODE))
-		toggle_aim_mode(user)
 
+	if(flags_gun_features & AUTO_AIM_MODE)
+		switch_aim_mode(user, TRUE)
 
 /obj/item/weapon/gun/unwield(mob/user)
 	. = ..()
@@ -314,11 +314,33 @@
 	if(A)
 		A.remove_hud(user)
 
-	if(CHECK_BITFIELD(flags_gun_features, GUN_IS_AIMING))
-		toggle_aim_mode(user)
+	if(flags_gun_features & AUTO_AIM_MODE)
+		switch_aim_mode(user, FALSE)
 
 	return TRUE
 
+/obj/item/weapon/gun/proc/switch_aim_mode(mob/user, turn_on = FALSE)
+	var/static/image/aim_mode_visual = image('icons/mob/hud.dmi', null, "aim_mode")
+
+	if(!turn_on && (flags_gun_features & GUN_IS_AIMING))
+		gun_iff_signal = null
+		iff_marine_damage_falloff += 0.15
+		user.overlays -= aim_mode_visual
+		flags_gun_features &= ~GUN_IS_AIMING
+		return
+
+	if(!ishuman(user) || flags_gun_features & GUN_IS_AIMING)
+		return
+
+	var/mob/living/carbon/human/human_user = user
+	if(!human_user.wear_id)
+		return
+
+	var/obj/item/card/id/access_card = human_user.wear_id
+	gun_iff_signal = access_card.access
+	iff_marine_damage_falloff += -0.15
+	human_user.overlays += aim_mode_visual
+	flags_gun_features |= GUN_IS_AIMING
 
 //----------------------------------------------------------
 			//							        \\
