@@ -393,3 +393,8 @@
   - bugfix: fixed a missing floodlight in LV engineering
   - bugfix: fixed cameras notifying the AI of their demise, despite a lack of power.
   - balance: Allows the AI to interface with groundside equipment
+2021-07-19:
+  Hekzder:
+  - spellcheck: CSE rank time now properly lists 100 hours instead of 50 hours.
+  QualityVan:
+  - bugfix: Larva now start growing again if their host stops being dead.
